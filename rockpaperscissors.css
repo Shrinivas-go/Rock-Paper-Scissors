@@ -1,6 +1,12 @@
 body{
   background-color:rgb(25,25,25);
   font-family:Verdana, Geneva, Tahoma, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  margin:0;
+  padding:0;
 }
 
 .title{
@@ -43,4 +49,3 @@ body{
 .reset{
   padding:6px 20px;
 }
-
