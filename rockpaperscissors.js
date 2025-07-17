@@ -6,6 +6,52 @@ ties:0
 
   updateScore();
 
+document.querySelector('.rock-btn').addEventListener('click',()=>{
+  displayResult('rock');
+});
+
+document.querySelector('.paper-btn').addEventListener('click',()=>{
+  displayResult('paper');
+});
+
+document.querySelector('.scissors-btn').addEventListener('click',()=>{
+  displayResult('scissors');
+});
+
+document.addEventListener('keydown',(event)=>{
+  if(event.key === 'r'){
+  displayResult('rock');
+  }
+  if(event.key === 'p'){
+  displayResult('paper');
+  }
+   if(event.key === 's'){
+  displayResult('scissors');
+  }
+    if(event.key === 'Escape'){
+  resetScore();
+  }
+   if(event.key === 'a'){
+  autoPlay();
+  }
+   if(event.key === 'y'){
+  autoPlay();
+  }
+   if(event.key === 'n'){
+  autoPlay();
+  }
+});
+
+ document.querySelector('.reset-btn').addEventListener('click', ()=>{
+resetScore();
+  });
+
+   document.querySelector('.auto-play-btn')
+     .addEventListener('click', ()=>{
+     autoPlay();
+  });
+
+
   function displayResult(move){
     const compMove = pickComputerMove();
      let result = '';
@@ -40,11 +86,11 @@ ties:0
   }
    
   if(result === 'You win!'){
- score.wins += 1;
+ score.wins++;
   } else if(result === 'You lose!'){
-    score.losses += 1;
+    score.losses++;
   } else if(result === 'Tie'){
-    score.ties += 1;
+    score.ties++;
   } 
    
     localStorage.setItem('score',JSON.stringify(score));
@@ -73,4 +119,44 @@ function pickComputerMove(){
  function updateScore(){
 const scoreElement = document.querySelector('.js-score');
  scoreElement.innerHTML = `wins: ${score.wins}, losses: ${score.losses} , ties: ${score.ties}`;
+  }
+      
+
+  function resetScore(){
+    document.querySelector('.confirmation').innerHTML = ` 
+    <p class="confirmation-question">Do you want to reset the score?</p>
+    <button class="confirmation-yes">Yes</button>
+    <button class="confirmation-no">No</button>
+  `;
+
+  document.querySelector('.confirmation-yes').addEventListener('click',()=>{
+  score.wins = 0;
+     score.losses= 0;
+     score.ties = 0;
+    localStorage.removeItem('score');
+    updateScore();
+    document.querySelector('.confirmation').innerHTML = '';
+  });
+
+   document.querySelector('.confirmation-no').addEventListener('click',()=>{
+    document.querySelector('.confirmation').innerHTML = '';
+   });
+  }
+ 
+  let autoPlaying = false;
+  let intervalId;
+
+  function autoPlay(){
+    if(!autoPlaying){
+         intervalId = setInterval(()=>{
+        let  playerMove = pickComputerMove();
+        displayResult(playerMove);
+        document.querySelector('.auto-play-btn').innerHTML = 'Stop playing';
+    },1000);
+       autoPlaying = true; 
+    } else{
+      document.querySelector('.auto-play-btn').innerHTML = 'Auto play';
+       clearInterval(intervalId);
+       autoPlaying = false; 
+    }
   }
